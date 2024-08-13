@@ -123,26 +123,26 @@ int main(){
     creation(head);
     display(head);
     size(head);
+    //Insertion
+    int val;
+    cout<<"Enter the data to be inserted: ";
+    cin>>val;
+    int pos;
+    cout<<"Enter position: ";
+    cin>>pos;
+    insert(head, val, pos);
+    cout<<"After Insertion:\n";
+    display(head);
+    //Deletion
+    int val1;
+    cout<<"Enter the data to be deleted: ";
+    cin>>val1;
+    deletion(head, val1);
+    cout<<"After Deletion:\n";
+    display(head);
     //Reverse
     reverse(head);
     cout<<"List after Reversing\n";
     display(head);
-    // //Insertion
-    // int val;
-    // cout<<"Enter the data to be inserted: ";
-    // cin>>val;
-    // int pos;
-    // cout<<"Enter position: ";
-    // cin>>pos;
-    // insert(head, val, pos);
-    // cout<<"After Insertion:\n";
-    // display(head);
-    // //Deletion
-    // int val1;
-    // cout<<"Enter the data to be deleted: ";
-    // cin>>val1;
-    // deletion(head, val1);
-    // cout<<"After Deletion:\n";
-    // display(head);
     return 0;
 }
