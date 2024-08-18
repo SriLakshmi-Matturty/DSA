@@ -102,7 +102,7 @@ void size(Node* head){
             iter= iter->next;
             length++;
         }
-        cout<<"Length of List = "<<length+1;
+        cout<<"Length of List = "<<length+1<<"\n";
     }
 }
 
