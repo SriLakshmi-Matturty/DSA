@@ -75,6 +75,23 @@ bool isoperator(char c){
 	return 0;
 }
 
+string reverse(string a){
+	string r_a;
+	int n=a.length();
+	for(int i=n-1; i>=0; i--){
+		if(a[i]=='('){
+			r_a+=')';
+		}
+		else if(a[i]==')'){
+			r_a+='(';
+		}
+		else{
+			r_a+= a[i];
+		}
+	}
+	return r_a;
+}
+
 string infix_to_postfix(string infix){
 	Stack *s= NULL;
 	string postfix;
@@ -104,6 +121,13 @@ string infix_to_postfix(string infix){
 	return postfix;
 }
 
+string infix_to_prefix(string infix){
+	string a= reverse(infix);
+	string b= infix_to_postfix(a);
+	string prefix= reverse(b);
+	return prefix;
+}
+
 int main(){
     string infix;
 	cout<<"Enter the infix expression: ";
@@ -111,5 +135,8 @@ int main(){
 	string postfix= infix_to_postfix(infix);
 	cout<<"The postfix expression is: ";
 	cout<<postfix<<"\n";
+	string prefix= infix_to_prefix(infix);
+	cout<<"The prefix expression is: ";
+	cout<<prefix<<"\n";
     return 0;
 }
