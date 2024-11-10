@@ -6,143 +6,174 @@ public:
     int data;
     Node* next;
 
-    Node(int new_data){
-        data= new_data;
+    Node(int val){
+        data=val;
         next= NULL;
     }
 };
 
-void creation(Node* &head){
-    Node *temp,*new_node;
-    bool choice= true;
-    cout<<"Do you want to Insert node: ";
-    cin>>choice;
-    while(choice){
-        int val;
-        cout<<"Enter the data of the node: ";
-        cin>>val;
-        new_node= new Node(val);
+class LinkedList{
+public:
+    Node* head= NULL;
+
+    void insert_at_beg(int x){
+        Node* newnode= new Node(x);
+        newnode->next= head;
+        head= newnode;
+    }
+
+    void insert_at_end(int x){
+        Node* newnode= new Node(x);
+        Node* iter= head;
         if(head== NULL){
-            head= temp= new_node;
+            head= newnode;
         }
         else{
-            temp-> next= new_node;
-            temp= new_node;
+            while(iter->next!= NULL){
+                iter= iter->next;
+            }
+            iter->next= newnode;
         }
-        cout<<"Do you want to Insert another node: ";
-        cin>>choice;
     }
-}
 
-void display(Node *head){
-    Node *temp=head;
-    cout<<"The data stored are: \n";
-    if(head== NULL){
-        cout<<"No data is stored\n";
-    }
-    while(temp!=NULL){
-        cout<<temp-> data<<"\n";
-        temp= temp-> next;
-    }
-}
-
-void insert(Node* &head, int val, int pos){
-    Node *temp, *new_node;
-    temp=head;
-    new_node= new Node(val);
-    if(pos==1){
-        new_node->next= head;
-        head= new_node;
-    }
-    else{
-        int i=1;
-        while(i!=pos-1){
-            temp= temp->next;
-            i++;
+    int length(){
+        if(head== NULL){
+            return 0;
         }
-        new_node-> next= temp-> next;
-        temp-> next= new_node;
+        Node* iter= head;
+        int l=1;
+        while(iter->next!= NULL){
+            l++;
+            iter= iter->next;
+        }
+        return l;
     }
-}
 
-void deletion(Node* &head, int val){
-    Node *iter= head, *temp, *prev_node;
-    if(!head){
-        cout<<"Error: List is empty!\n";
+    void insert_at_pos(int x, int pos){
+        if(pos==1){
+            insert_at_beg(x);
+        }
+        else if(pos> length()){
+            insert_at_end(x);
+        }
+        else{
+            Node* newnode= new Node(x);
+            int i=1;
+            Node* iter= head;
+            while(i<pos-1){
+                iter= iter->next;
+                i++;
+            }
+            newnode->next= iter->next;
+            iter->next= newnode;
+        }
     }
-    else if(head->data == val){
-        temp=head;
+
+    void del_head(){
+        if(head== NULL){
+            cout<<"Error!\n";
+            return;
+        }
+        Node* temp= head;
         head= head->next;
         delete temp;
     }
-    else{
-        while(iter->next!= NULL && iter->data !=val){
-            prev_node= iter;
+
+    void del_tail(){
+        if(head== NULL){
+            cout<<"Error!\n";
+            return;
+        }
+        Node *iter= head, *prev= head;
+        while(iter->next!= NULL){
+            prev= iter;
             iter= iter->next;
         }
-        if(iter->next== NULL && iter->data != val){
-            cout<<"Error: Value not found\n";
+        prev->next= NULL;
+        delete iter;
+    }
+
+    void del_at_pos(int pos){
+        if(pos==1){
+            del_head();
+        }
+        else if(pos>= length()){
+            del_tail();
         }
         else{
-            prev_node->next= iter->next;
-            temp= iter;
-            delete temp;
+            int i=1;
+            Node *iter=head, *prev;
+            while(i<pos){
+                prev=iter;
+                iter= iter->next;
+            }
+            prev->next= iter->next;
+            delete iter; 
         }
     }
-}
 
-void size(Node* head){
-    Node* iter= head;
-    int length=0;
-    if(head== NULL){
-        cout<<"Length of List = "<<length<<"\n";
+    void del_x(int x){
+        if(head== NULL){
+            cout<<"NOT FOUND!\n";
+        }
+        else{
+            if(head->data== x){
+                del_head();
+            }
+            else{
+                Node *iter= head, *prev= NULL;
+                while(iter!= NULL && iter->data!= x){
+                    prev= iter;
+                    iter= iter->next;
+                }
+                if(iter== NULL){
+                    cout<<"NOT FOUND!\n";
+                }
+                else{
+                    prev->next= iter->next;
+                    delete iter;
+                }
+            }
+        }
     }
-    else{
-        while(iter->next!= NULL){
+
+    void reverse(){
+        Node *prev_node= NULL, *c_node, *next_node;
+        c_node= next_node= head;
+        while(next_node!= NULL){
+            next_node= next_node->next;
+            c_node->next = prev_node;
+            prev_node= c_node;
+            c_node= next_node;
+        }
+        head= prev_node;
+    }
+
+    void print(){
+        Node* iter= head;
+        while(iter!= NULL){
+            cout<<iter->data<<" ";
             iter= iter->next;
-            length++;
         }
-        cout<<"Length of List = "<<length+1<<"\n";
+        cout<<"\n";
     }
-}
-
-void reverse(Node* &head){
-    Node *prev_node= NULL, *c_node, *next_node;
-    c_node= next_node= head;
-    while(next_node!= NULL){
-        next_node= next_node->next;
-        c_node->next = prev_node;
-        prev_node= c_node;
-        c_node= next_node;
-    }
-    head= prev_node;
-}
+};
 
 int main(){
-    Node *head= NULL;
-    creation(head);
-    display(head);
-    size(head);
-    //Insertion
-    int val;
-    cout<<"Enter the data to be inserted: ";
-    cin>>val;
-    int pos;
-    cout<<"Enter position: ";
-    cin>>pos;
-    insert(head, val, pos);
-    cout<<"After Insertion:\n";
-    display(head);
-    //Deletion
-    int val1;
-    cout<<"Enter the data to be deleted: ";
-    cin>>val1;
-    deletion(head, val1);
-    cout<<"After Deletion:\n";
-    display(head);
-    //Reverse
-    reverse(head);
-    cout<<"List after Reversing\n";
-    display(head);
+    LinkedList ll;
+    ll.insert_at_beg(1);
+    ll.insert_at_beg(2);
+    ll.insert_at_beg(3);
+    ll.insert_at_beg(4);
+    ll.insert_at_pos(5, 3);
+    ll.print();
+    ll.del_head();
+    ll.print();
+    ll.del_at_pos(4);
+    ll.print();
+    ll.del_x(6);
+    ll.print();
+    ll.reverse();
+    ll.print();
     return 0;
 }
